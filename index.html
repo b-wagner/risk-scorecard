@@ -1,0 +1,145 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RISK Scorecard</title>
+
+  <style>
+      .fieldset-auto-width { 
+        display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>RISK Manager</h1>
+  
+  <form>
+      <fieldset class="fieldset-auto-width">
+        Territories Owned: <input type = "number" name = "TerritoriesOwned" id="TerritoriesOwned"><br><br>
+        Stars on Cards: <input type = "number" name = "cards" id="cards">
+        <br><br>
+        Continents Owned: 
+        <br>
+        <input type = "checkbox" name = "continent" value = "Africa" id="africa">Africa (3)<br>
+        <input type = "checkbox" name = "continent" value = "Asia" id="asia">Asia (7)<br>
+        <input type = "checkbox" name = "continent" value = "Australia" id="australia">Australia (2)<br>
+        <input type = "checkbox" name = "continent" value = "Europe" id="europe">Europe (5)<br>
+        <input type = "checkbox" name = "continent" value = "North America" id="north-america">North America (5)<br>
+        <input type = "checkbox" name = "continent" value = "South America" id="south-america">South America (2)<br>
+        <br>
+        <input type="button" style="height:35px; width:100px" value="Calculate" id="submitButton">
+    </fieldset>
+  </form>
+  
+  <h3>Number of territories you own: </h3><h3 id="territories"></h3>
+  <h3>Troops you can place on your next turn:</h3><h3 id="troops"></h3>
+
+  <script>
+    window.onload = function(){
+        document.getElementById("territories").innerText = window.localStorage.getItem("territories");
+    }
+
+    document.getElementById("submitButton").onclick = function(){
+        var territories = document.getElementById("TerritoriesOwned").value;
+        window.localStorage.setItem("territories", territories);
+
+        document.getElementById("territories").innerText = window.localStorage.getItem("territories");
+        document.getElementById("troops").innerText = troopsToPlace();
+    }
+
+    function troopsToPlace(){
+        var territories = document.getElementById("TerritoriesOwned").value;
+        var stars = document.getElementById("cards").value;
+        var continentBonus = 0;
+        var troops = 3;
+        var cardBonus = 0;
+
+        if(territories >= 12 && territories <= 14){
+            troops += 1;
+        }
+        else if(territories >= 15 && territories <= 17){
+            troops += 2;
+        }
+        else if(territories >= 18 && territories <= 20){
+            troops += 3;
+        }
+        else if(territories >= 21 && territories <= 23){
+            troops += 4;
+        }
+        else if(territories >= 24 && territories <= 26){
+            troops += 5;
+        }
+        else if(territories >= 27 && territories <= 29){
+            troops += 6;
+        }
+        else if(territories >= 30 && territories <= 32){
+            troops += 7;
+        }
+        else if(territories >= 33 && territories <= 35){
+            troops += 8;
+        }
+        else if(territories >= 36 && territories <= 39){
+            troops += 9;
+        }
+        else if(territories >= 40 && territories <= 42){
+            troops += 10;
+        }
+
+        if(document.getElementById("africa").checked){
+            continentBonus += 3;
+        }
+        if(document.getElementById("asia").checked){
+            continentBonus += 7;
+        }
+        if(document.getElementById("australia").checked){
+            continentBonus += 2;
+        }
+        if(document.getElementById("europe").checked){
+            continentBonus += 5;
+        }
+        if(document.getElementById("north-america").checked){
+            continentBonus += 5;
+        }
+        if(document.getElementById("south-america").checked){
+            continentBonus += 2;
+        }
+
+        switch(stars){
+            case "2":
+                cardBonus = 2;
+                break;
+            case "3":
+                cardBonus = 4;
+                break;
+            case "4":
+                cardBonus = 7;
+                break;
+            case "5":
+                cardBonus = 10;
+                break;
+            case "6":
+                cardBonus = 13;
+                break;
+            case "7":
+                cardBonus = 17;
+                break;
+            case "8":
+                cardBonus = 21;
+                break;
+            case "9":
+                cardBonus = 25;
+                break;
+            case "10":
+                cardBonus = 30;
+                break;
+        }
+
+        return troops + continentBonus + cardBonus;
+    }
+  </script>
+
+</body>
+</html>
